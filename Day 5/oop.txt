@@ -1,0 +1,46 @@
+using System;
+using System.IO;
+
+class Program
+{
+    static void ShowFiles(string path)
+    {
+        string[] folders = Directory.GetDirectories(path);
+
+        // Show all files
+        string[] files = Directory.GetFiles(path);
+
+        foreach (string file in files)
+        {
+            Console.WriteLine("File: " + file);
+        }
+
+        foreach (string folder in folders)
+        {
+            Console.WriteLine("Folder: " + folder);
+            // Recursive call
+            ShowFiles(folder);
+        }
+    }
+
+    public static void ShowALL()
+    {
+        string path = @"C:\assignment iwp";
+
+        // Check if directory exists before trying to access it
+        if (Directory.Exists(path))
+        {
+            ShowFiles(path);
+        }
+        else
+        {
+            Console.WriteLine($"Directory not found: {path}");
+        }
+    }
+
+    static void Main()
+    {
+        // Call the ShowALL method
+        ShowALL();
+    }
+}
