@@ -1,0 +1,91 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int num, divisor, quotient, remainder;
+
+        Console.Write("Enter number: ");
+        num = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter divisor: ");
+        divisor = Convert.ToInt32(Console.ReadLine());
+
+        quotient = num / divisor;
+        remainder = num - (quotient * divisor);
+
+        Console.WriteLine("Remainder = " + remainder);
+    }
+}
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        string sentence;
+        
+        Console.Write("Enter a sentence: ");
+        sentence = Console.ReadLine();
+
+        string[] words = sentence.Split(' ');
+        string reversedSentence = "";
+
+        for (int i = words.Length - 1; i >= 0; i--)
+        {
+            reversedSentence = reversedSentence + words[i] + " ";
+        }
+
+        Console.WriteLine("Reversed sentence: " + reversedSentence);
+    }
+}
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int[,] A = new int[2, 2];
+        int[,] B = new int[2, 2];
+        int[,] C = new int[2, 2];
+
+        Console.WriteLine("Enter elements of first matrix:");
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                A[i, j] = Convert.ToInt32(Console.ReadLine());
+            }
+        }
+
+        Console.WriteLine("Enter elements of second matrix:");
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                B[i, j] = Convert.ToInt32(Console.ReadLine());
+            }
+        }
+
+        // Sum of matrices
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                C[i, j] = A[i, j] + B[i, j];
+            }
+        }
+
+        Console.WriteLine("Sum of matrices:");
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                Console.Write(C[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
