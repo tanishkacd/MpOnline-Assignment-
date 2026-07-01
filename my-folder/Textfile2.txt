@@ -1,0 +1,56 @@
+using System;
+
+namespace Core_ConsoleApp1
+{
+    internal class ArraysDemo
+    {
+        public static void StatesAndCities()
+        {
+            // Step 1: Ask how many states
+            Console.Write("Enter number of states: ");
+            int numberOfStates = int.Parse(Console.ReadLine());
+
+            // Step 2: Create jagged array
+            string[][] statesAndCities = new string[numberOfStates][];
+
+            // Step 3: Get input for each state
+            for (int i = 0; i < numberOfStates; i++)
+            {
+                Console.WriteLine("\nState " + (i + 1));
+                Console.Write("Enter state name and cities (separate by space): ");
+
+                // Read the line and split into array
+                string input = Console.ReadLine();
+                string[] parts = input.Split(' ');
+
+                // Store in jagged array
+                statesAndCities[i] = parts;
+            }
+
+            // Step 4: Display the data
+            Console.WriteLine("\n--- OUTPUT ---");
+
+            for (int i = 0; i < statesAndCities.Length; i++)
+            {
+                // Print state name (first element)
+                Console.WriteLine("\nState: " + statesAndCities[i][0]);
+
+                // Print cities (remaining elements)
+                Console.Write("Cities: ");
+                for (int j = 1; j < statesAndCities[i].Length; j++)
+                {
+                    Console.Write(statesAndCities[i][j] + " ");
+                }
+
+                // Print total count
+                Console.WriteLine("\nTotal cities: " + (statesAndCities[i].Length - 1));
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            StatesAndCities();
+            Console.ReadLine();
+        }
+    }
+}
