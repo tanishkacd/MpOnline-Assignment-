@@ -1,0 +1,297 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Array.Demo.cs
+{
+    class BankAccount
+    {
+        //Private field (hidden data)
+        private double balance;
+
+        //Deposit Method
+        public void Deposit(double amount)
+        {
+            if (amount > 0)
+            {
+                balance += amount;
+                Console.WriteLine("Deposited: " + amount);
+            }
+        }
+
+        public void Withdraw(double amount)
+        {
+            if (amount <= balance)
+            {
+                balance -= amount;
+                Console.WriteLine("Withdrew: " + amount);
+            }
+            else
+            {
+                Console.WriteLine("Insufficient funds");
+            }
+        }
+
+        public void ShowBalance()
+        {
+            Console.WriteLine("Balance: " + balance);
+        }
+    }
+
+    internal class BankAccountEncap
+    {
+        public static void showBankBalance()
+        {
+            BankAccount acc = new BankAccount();
+            acc.Deposit(5000);
+            acc.Withdraw(2000);
+            acc.ShowBalance();
+            // acc.balance = 100000; //error as balance cannot be accessed -->private
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            BankAccountEncap.showBankBalance();
+            Console.ReadLine(); // Keeps the console window open
+        }
+    }
+}
+//Create a shopping cart for multiple products where each product has id , name , price and quantity. Display the cart with multiple products and show the total cost of shopping cart
+using System;
+
+namespace ShoppingCart
+{
+    // Base class
+    class Product
+    {
+        public int id;
+        public string name;
+        public double price;
+        public int quantity;
+        
+        public void GetProductDetails()
+        {
+            Console.Write("Enter Product ID: ");
+            id = Convert.ToInt32(Console.ReadLine());
+            
+            Console.Write("Enter Product Name: ");
+            name = Console.ReadLine();
+            
+            Console.Write("Enter Price: ");
+            price = Convert.ToDouble(Console.ReadLine());
+            
+            Console.Write("Enter Quantity: ");
+            quantity = Convert.ToInt32(Console.ReadLine());
+        }
+    }
+    
+    // Derived class - Level 1
+    class CartItem : Product
+    {
+        public double itemTotal;
+        
+        public void CalculateItemTotal()
+        {
+            itemTotal = price * quantity;
+        }
+    }
+    
+    // Derived class - Level 2
+    class ShoppingCartTotal : CartItem
+    {
+        public double grandTotal;
+        
+        public void CalculateGrandTotal(CartItem item1, CartItem item2)
+        {
+            grandTotal = item1.itemTotal + item2.itemTotal;
+        }
+        
+        public void DisplayCart(CartItem item1, CartItem item2)
+        {
+            Console.WriteLine();
+            Console.WriteLine("===== SHOPPING CART =====");
+            Console.WriteLine();
+            Console.WriteLine("ID: " + item1.id);
+            Console.WriteLine("Product: " + item1.name);
+            Console.WriteLine("Price: Rs." + item1.price);
+            Console.WriteLine("Quantity: " + item1.quantity);
+            Console.WriteLine("Total: Rs." + item1.itemTotal);
+            Console.WriteLine();
+            Console.WriteLine("ID: " + item2.id);
+            Console.WriteLine("Product: " + item2.name);
+            Console.WriteLine("Price: Rs." + item2.price);
+            Console.WriteLine("Quantity: " + item2.quantity);
+            Console.WriteLine("Total: Rs." + item2.itemTotal);
+            Console.WriteLine();
+            Console.WriteLine("========================");
+            Console.WriteLine("GRAND TOTAL: Rs." + grandTotal);
+            Console.WriteLine("========================");
+        }
+    }
+    
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter details for Product 1:");
+            Console.WriteLine();
+            
+            CartItem product1 = new CartItem();
+            product1.GetProductDetails();
+            product1.CalculateItemTotal();
+            
+            Console.WriteLine();
+            Console.WriteLine("Enter details for Product 2:");
+            Console.WriteLine();
+            
+            CartItem product2 = new CartItem();
+            product2.GetProductDetails();
+            product2.CalculateItemTotal();
+            
+            ShoppingCartTotal cart = new ShoppingCartTotal();
+            cart.CalculateGrandTotal(product1, product2);
+            cart.DisplayCart(product1, product2);
+            
+            Console.ReadLine();
+        }
+    }
+}
+// Recursion concept: Tree structure ceo, manager , employee who is under ceo, who is under manger and who is under employee hierarchial structure
+using System;
+using System.Collections.Generic;
+
+namespace HierarchyApp
+{
+    class Employee
+    {
+        public string Name;
+        public string Position;
+        public List<Employee> Subordinates;
+
+        public Employee(string name, string position)
+        {
+            Name = name;
+            Position = position;
+            Subordinates = new List<Employee>();
+        }
+
+        public void AddSubordinate(Employee emp)
+        {
+            Subordinates.Add(emp);
+        }
+
+        public void DisplayHierarchy(int level)
+        {
+            string indent = "";
+            for (int i = 0; i < level; i++)
+            {
+                indent += "  ";
+            }
+
+            Console.WriteLine(indent + "|- " + Position + ": " + Name);
+
+            foreach (Employee emp in Subordinates)
+            {
+                emp.DisplayHierarchy(level + 1);
+            }
+        }
+
+        public Employee FindEmployee(string name)
+        {
+            if (this.Name == name)
+                return this;
+
+            foreach (Employee emp in Subordinates)
+            {
+                Employee found = emp.FindEmployee(name);
+                if (found != null)
+                    return found;
+            }
+            return null;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("=== COMPANY HIERARCHY BUILDER ===");
+            Console.WriteLine();
+
+            // Create CEO
+            Console.Write("Enter CEO Name: ");
+            string ceoName = Console.ReadLine();
+            Employee ceo = new Employee(ceoName, "CEO");
+
+            List<Employee> allEmployees = new List<Employee>();
+            allEmployees.Add(ceo);
+
+            Console.WriteLine();
+            Console.Write("How many managers under CEO? ");
+            int managerCount = Convert.ToInt32(Console.ReadLine());
+
+            for (int i = 1; i <= managerCount; i++)
+            {
+                Console.WriteLine();
+                Console.Write("Enter Manager " + i + " Name: ");
+                string managerName = Console.ReadLine();
+                Employee manager = new Employee(managerName, "Manager");
+                ceo.AddSubordinate(manager);
+                allEmployees.Add(manager);
+
+                Console.Write("How many employees under " + managerName + "? ");
+                int empCount = Convert.ToInt32(Console.ReadLine());
+
+                for (int j = 1; j <= empCount; j++)
+                {
+                    Console.Write("  Enter Employee " + j + " Name: ");
+                    string empName = Console.ReadLine();
+                    Employee emp = new Employee(empName, "Employee");
+                    manager.AddSubordinate(emp);
+                    allEmployees.Add(emp);
+
+                    Console.Write("  Any junior under " + empName + "? (yes/no): ");
+                    string hasJunior = Console.ReadLine();
+
+                    if (hasJunior.ToLower() == "yes")
+                    {
+                        Console.Write("    Enter Junior Name: ");
+                        string juniorName = Console.ReadLine();
+                        Employee junior = new Employee(juniorName, "Junior");
+                        emp.AddSubordinate(junior);
+                        allEmployees.Add(junior);
+                    }
+                }
+            }
+
+            // Display hierarchy
+            Console.WriteLine();
+            Console.WriteLine("=== COMPANY HIERARCHY ===");
+            Console.WriteLine();
+            ceo.DisplayHierarchy(0);
+
+            Console.WriteLine();
+            Console.Write("Search for an employee (enter name): ");
+            string searchName = Console.ReadLine();
+
+            Employee found = ceo.FindEmployee(searchName);
+            if (found != null)
+            {
+                Console.WriteLine("✓ " + found.Name + " found! Position: " + found.Position);
+            }
+            else
+            {
+                Console.WriteLine("✗ Employee not found!");
+            }
+
+            Console.ReadLine();
+        }
+    }
+}
+// Create a drone system with the behaviour of a take off the move to the particular direction, movement and land where you will be having battery life, direstion and you wiill be checking whether it will be flying or not.
+Wap for drone mangaement system where every drone is elligible take off, land and move, before the drone fly, where batter and battery is not accesible from outside
